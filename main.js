@@ -5,7 +5,7 @@ async function getCenterInformation (centerSlug) {
     const { data: { data: center } } = await axios.get(`https://partners.doctolib.fr/booking/${centerSlug}.json`);
     return {
         centerId: center.profile.id,
-        visitMotivesIds: center.visit_motives.map(({ id }) => id),
+        visitMotives: center.visit_motives.map(({ id, name }) => ({ id, name })),
         agendaIds: center.agendas.map(({ id }) => id),
         name: center.profile.name_with_title,
     }
@@ -13,17 +13,27 @@ async function getCenterInformation (centerSlug) {
 
 async function getAvailableForCenterTomorrow (centerInfo) {
     const tomorrow = day().add(1, 'd');
-    const { data: { availabilities } } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow.format('YYYY-MM-DD')}&visit_motive_ids=${centerInfo.visitMotivesIds.join('-')}&agenda_ids=${centerInfo.agendaIds.join('-')}&insurance_sector=public&practice_ids=${centerInfo.centerId}&destroy_temporary=true`);
+    const { data: { availabilities } } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow.format('YYYY-MM-DD')}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendaIds.join('-')}&insurance_sector=public&practice_ids=${centerInfo.centerId}&destroy_temporary=true`);
     if (availabilities.length === 0) {
         return [];
     }
     return availabilities[0].slots;
 }
 
-async function getAvailabilityMap (centers) {
+function applyFilterVisitMotives(centerInfo, filter) {
+    if (!filter) {
+        return centerInfo;
+    }
+    return {
+        ...centerInfo,
+        visitMotives: centerInfo.visitMotives.filter(filter),
+    }
+}
+
+async function getAvailabilityMap (centers, filter) {
     const centerMap = [];
     for (const center of centers) {
-        const centerInfo = await getCenterInformation(center);
+        const centerInfo = applyFilterVisitMotives(await getCenterInformation(center), filter);
         const slots = await getAvailableForCenterTomorrow(centerInfo);
         centerMap.push({
             available: slots.length,
@@ -40,7 +50,7 @@ async function main() {
         'centre-de-vaccination-covid-19-chantepie',
         'ch-d-avranches-granville-centre-de-vaccination-covid'
     ];
-    console.table(await getAvailabilityMap(centers));
+    console.table(await getAvailabilityMap(centers, ({ name }) => name.includes('Pfizer')));
 }
 
 main().catch(e => console.error(e));
