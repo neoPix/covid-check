@@ -15,7 +15,7 @@ npm i
 - Commencez par personnaliser la liste des centres `CENTERS` avec ceux autours de chez vous.
 - Configurez votre `PUSH_BULLET_TOKEN`.
 - Pensez a mofifier la fonction `typeFilter` pour filtrer correctement sur le type de vaccin souhaité.
-- `npm run dev`
+- `npm run start`
 
 ## Context
 

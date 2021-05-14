@@ -2,9 +2,9 @@
   "name": "covidcheck",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "dev": "node index.js"
+    "start": "node main.js"
   },
   "author": "David Balan",
   "license": "MIT",
