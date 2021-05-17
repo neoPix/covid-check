@@ -75,7 +75,7 @@ async function getAvailableTomorrowForCenter(centerInfo, date) {
     if (centerInfo.visitMotives.length === 0) {
         return null;
     }
-    const tomorrow = (date ? day(date) : day()).format('YYYY-MM-DD');
+    const tomorrow = (date ? day(date) : day().add(1, 'd')).format('YYYY-MM-DD');
     const { data } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendas.map(({ id }) => id).join('-')}&insurance_sector=public&practice_ids=${centerInfo.agendas.map(({ place }) => place).join('-')}&destroy_temporary=true&limit=10`);
 
     if (data.availabilities.length === 0) {
