@@ -17,6 +17,10 @@ npm i
 - Pensez a mofifier la fonction `typeFilter` pour filtrer correctement sur le type de vaccin souhaité.
 - `npm run start`
 
+## AWS Lambda
+
+- `npm run build`
+
 ## Context
 
 Ce code a été embarqué dans une Lambda AWS et avec un CRON Cloud Watch régulier afin de détecter et réagir au plus vite sur les disponnibilité de vaccin.
