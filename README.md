@@ -20,6 +20,8 @@ npm i
 ## AWS Lambda
 
 - `npm run build`
+- Take dist.zip
+- Entrypoint `main.main`
 
 ## Context
 
