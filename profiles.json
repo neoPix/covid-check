@@ -2,7 +2,7 @@
     "name": "user one",
     "notify": {
         "type": "pushbullet",
-        "token": ""
+        "token": "notAValidTokenButYouGetTheIdea"
     },
     "places": [
         "https://www.doctolib.fr/centre-de-sante/chantepie/centre-de-vaccination-covid-19-chantepie",
