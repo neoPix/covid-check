@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "build": "npm i && rm dist.zip && zip -r dist.zip ."
+    "build": "npm i && rm -f dist.zip && zip -r dist.zip ."
   },
   "author": "David Balan",
   "license": "MIT",
