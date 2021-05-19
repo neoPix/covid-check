@@ -1,0 +1,29 @@
+[{
+    "name": "user one",
+    "notify": {
+        "type": "pushbullet",
+        "token": ""
+    },
+    "places": [
+        "https://www.doctolib.fr/centre-de-sante/chantepie/centre-de-vaccination-covid-19-chantepie",
+        "https://www.doctolib.fr/centre-de-sante/saint-gregoire/centre-de-vaccination-de-saint-gregoire",
+        "https://www.doctolib.fr/centre-de-sante/ile-et-vilaine/centre-de-vaccination-covid-19-vaccimobile-35-ars-communes-ile-et-vilaine",
+        "https://www.doctolib.fr/centre-de-sante/bruz/centre-de-vaccination-parc-expo-bruz",
+        "https://www.doctolib.fr/centre-de-sante/combourg/centre-de-vaccination-covid-19-de-la-cpts-de-bretagne-romantique",
+        "https://www.doctolib.fr/centre-de-sante/liffre/centre-de-vaccination-covid-19-de-liffre",
+        "https://www.doctolib.fr/centre-de-vaccinations-internationales/rennes/centre-de-vaccination-covid-19-rennes-liberte",
+        "https://www.doctolib.fr/centre-de-sante/rennes/centre-de-vaccination-covid-19-sos-medecins-rennes",
+        "https://www.doctolib.fr/centre-de-sante/fougeres/centre-de-vaccination-de-fougeres"
+    ]
+}, {
+    "name": "user two",
+    "notify": {
+        "type": "email",
+        "destinator": "userone@test.not-a-domain.fr"
+    },
+    "places": [
+        "https://www.doctolib.fr/cabinet-medical/chateaubriant/centre-de-vaccination-covid-chateaubriant",
+        "https://www.doctolib.fr/centre-de-sante/fougeres/centre-de-vaccination-de-fougeres",
+        "https://www.doctolib.fr/maison-de-sante/mayenne/pole-de-sante-de-mayenne-centre-de-vaccination"
+    ]
+}]

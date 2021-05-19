@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
+    "nodemailer": "^6.6.0",
     "pushbullet": "^2.4.0"
   }
 }
