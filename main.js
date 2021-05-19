@@ -147,7 +147,7 @@ async function main() {
     const profiles = require('./profiles.json');
     const uniqCenters = [...new Set(profiles.map(({ places }) => places).flat())];
     const availability = await getAvailabilityMap(uniqCenters, typeFilter);
-    const slots = availability;//.filter(({ available }) => available > 0);
+    const slots = availability.filter(({ available }) => available > 0);
     if(slots.length) {
         console.table(slots);
         console.info('Notifying according to profiles');
