@@ -56,7 +56,7 @@ async function getAvailableForCenter(centerInfo, date) {
     const day = require('dayjs');
     const tomorrow = (date ? day(date) : day().add(1, 'd')).format('YYYY-MM-DD');
     const axios = require('axios');
-    const { data } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendas.map(({ id }) => id).join('-')}&insurance_sector=public&practice_ids=${centerInfo.agendas.map(({ place }) => place).join('-')}&destroy_temporary=true&limit=20`);
+    const { data } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendas.map(({ id }) => id).join('-')}&insurance_sector=public&practice_ids=${centerInfo.agendas.map(({ place }) => place).join('-')}&destroy_temporary=true&limit=30`);
 
     if (data.availabilities.length === 0) {
         return [];
