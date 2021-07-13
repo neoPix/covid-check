@@ -49,23 +49,22 @@ async function getCenterInformations(url) {
     }).filter(({ agendas, visitMotives }) => agendas.length > 0 && visitMotives.length > 0);
 }
 
-async function getAvailableTomorrowForCenter(centerInfo, date) {
+async function getAvailableForCenter(centerInfo, date) {
     if (centerInfo.visitMotives.length === 0) {
-        return null;
+        return [];
     }
     const day = require('dayjs');
     const tomorrow = (date ? day(date) : day().add(1, 'd')).format('YYYY-MM-DD');
     const axios = require('axios');
-    const { data } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendas.map(({ id }) => id).join('-')}&insurance_sector=public&practice_ids=${centerInfo.agendas.map(({ place }) => place).join('-')}&destroy_temporary=true&limit=1`);
+    const { data } = await axios.get(`https://partners.doctolib.fr/availabilities.json?start_date=${tomorrow}&visit_motive_ids=${centerInfo.visitMotives.map(({ id }) => id).join('-')}&agenda_ids=${centerInfo.agendas.map(({ id }) => id).join('-')}&insurance_sector=public&practice_ids=${centerInfo.agendas.map(({ place }) => place).join('-')}&destroy_temporary=true&limit=20`);
 
     if (data.availabilities.length === 0) {
-        return null;
+        return [];
     }
-    const line = data.availabilities[0];
-    return {
+    return data.availabilities.filter(line => Array.isArray(line.slots) && line.slots.length).map(line => ({
         date: line.date,
         slots: line.slots,
-    }
+    }));
 }
 
 function applyFilterVisitMotives(centerInfo, filter) {
@@ -87,18 +86,18 @@ async function getAvailabilityMap(centers, filter) {
         const centers = await getCenterInformations(url);
         return Promise.all(centers.map(async (center) => {
             const centerInfo = applyFilterVisitMotives(center, filter);
-            const result = await getAvailableTomorrowForCenter(centerInfo);
-            return {
+            const results = await getAvailableForCenter(centerInfo);
+            return results.map(result => ({
                 available: result ? result.slots.length : 0,
                 name: centerInfo.name,
                 when: result ? result.date : '',
                 url: centerInfo.url,
                 id: url,
-            };
+            }));
         }));
     }));
 
-    return search.flat();
+    return search.flat(2);
 }
 async function notifyPushBullet(profile, slots) {
     const pushBullet = require('pushbullet');
@@ -140,14 +139,14 @@ Utilisez le lien suivant pour prendre rendez-vous ${url}.
 
 const typeFilter = ({ name }) => {
     const checkedName = name.toLocaleLowerCase();
-    return checkedName.includes('pfizer');
+    return checkedName.includes('pfizer') && (checkedName.includes('1re') || checkedName.includes('première'));
 }
 
 async function main() {
     const profiles = require('./profiles.json');
     const uniqCenters = [...new Set(profiles.map(({ places }) => places).flat())];
-    const availability = await getAvailabilityMap(uniqCenters, typeFilter);
-    const slots = availability.filter(({ available }) => available > 0);
+    const availabilities = await getAvailabilityMap(uniqCenters, typeFilter);
+    const slots = availabilities.filter(({ available }) => available > 0);
     if(slots.length) {
         console.table(slots);
         console.info('Notifying according to profiles');
