@@ -139,7 +139,7 @@ Utilisez le lien suivant pour prendre rendez-vous ${url}.
 
 const typeFilter = ({ name }) => {
     const checkedName = name.toLocaleLowerCase();
-    return checkedName.includes('pfizer') && (checkedName.includes('1re') || checkedName.includes('première'));
+    return checkedName.includes('pfizer') && (checkedName.includes('3e') || checkedName.includes('trois') || checkedName.includes('rappel'));
 }
 
 async function main() {
